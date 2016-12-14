@@ -561,7 +561,10 @@ Example 1-12.使用非默认的构建文件
 方案：使用Gradle视图然后执行Gradle任务
 
 讨论： 当你创建Android工程的时候，Android Studio会为这个多工程的项目创建Gradle的构建文件（已经在Recipe1.1中讲过）。Android Studio还提供了Gradle视图，在这个视图中你可以看到所有的任务列表，如图：Figure 1-7所示
-![](http://)
+![](https://raw.githubusercontent.com/challengemyself/android-recipies-for-android/master/imgs/2016-12-13.png) Figure 1-7.android studio 中内置的Gradle视图
+
+
+			
 
 
 
