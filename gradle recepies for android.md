@@ -569,7 +569,7 @@ Example 1-12.使用非默认的构建文件
 				Figure 1-8.Running Gradle inside Android Studio
 	在“Run window”面板上展示的执行信息仅仅是Gradle的前端提示信息而已，本质上Gradle的执行全都是命令行。
     Android studio 还提供了专门的"Gradle console",如图Figure 1-9所示：
-    
+    ![](https://github.com/challengemyself/android-recipies-for-android/blob/master/imgs/2016-12-15-01-03-23.png?raw=true)
     Figure 1-9.Gradle Console view in Android Studio
 			
 
