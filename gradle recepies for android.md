@@ -562,8 +562,15 @@ Example 1-12.使用非默认的构建文件
 
 讨论： 当你创建Android工程的时候，Android Studio会为这个多工程的项目创建Gradle的构建文件（已经在Recipe1.1中讲过）。Android Studio还提供了Gradle视图，在这个视图中你可以看到所有的任务列表，如图：Figure 1-7所示
 ![](https://raw.githubusercontent.com/challengemyself/android-recipies-for-android/master/imgs/2016-12-13.png) Figure 1-7.android studio 中内置的Gradle视图
-
-
+在android studio的这个Gradle视图中，Gradle的所有任务是被分门别类的组织起来的，分别的类目像android,build,install,other，就像 Figure 1-7 的图解一样。
+如果想要运行一个指定的Gradle的任务，你只需要双击列表中的某一个任务。运行结果会像 Figure 1-8 所示。
+双击任何任务该任务就会执行，执行的任务信息都会展示在命令行中，这个命令行是在“Run window”这个选项卡中。每次你执行某个特定的任务，都会创建一个任务的配置信息，并且这个配置信息会保存到“Configurations menu”中，所以你想在执行一次该任务的时候你只需要再一次的上级这个任务就ok了。
+![](https://github.com/challengemyself/android-recipies-for-android/blob/master/imgs/2016-12-15-00-38-18.png?raw=true)
+				Figure 1-8.Running Gradle inside Android Studio
+	在“Run window”面板上展示的执行信息仅仅是Gradle的前端提示信息而已，本质上Gradle的执行全都是命令行。
+    Android studio 还提供了专门的"Gradle console",如图Figure 1-9所示：
+    
+    Figure 1-9.Gradle Console view in Android Studio
 			
 
 
