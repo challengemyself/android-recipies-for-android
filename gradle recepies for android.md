@@ -571,7 +571,38 @@ Example 1-12.使用非默认的构建文件
     Android studio 还提供了专门的"Gradle console",如图Figure 1-9所示：
     ![](https://github.com/challengemyself/android-recipies-for-android/blob/master/imgs/2016-12-15-01-03-23.png?raw=true)
     Figure 1-9.Gradle Console view in Android Studio
-			
-
+	另外：
+    使用命令行运行Gradle任务，参考 Recipe 1.3
+    
+    
+    
+    1.5 添加java依赖工程。
+    需求： 在你的Android工程总添加Java工程依赖包。
+    解决方案：在你的application模块的build.gradle文件中的“dependencies”闭包里面添加 组，名字，版本。
+    讨论：默认情况下，Android application会创建两个build.gradle文件，一个在一级目录下，另一个在applicaton本身这个module的目录下面，这个module在工程的二级目录下面，文件夹名字叫app。
+    在app目录下的build.gradle文件里面，有一个代码块叫dependencies。如Example 1-13,创建这个文件的时候，代码块里面默认的代码设置。
+    Example1-13 , 新的android工程的默认的dependencies
+    dependencies{
+    	compile fileTree(include:['*.jar'],dir:'libs')
+        testCompile 'junit:junit:4.12'
+        compile 'com.android.support:appcompat-v7:23.3.0'
+    }
+    
+    基础语法：
+    Gradle支持好几种写法来添依赖。最常用的方式就是最外层是引号，然后中间使用冒号来分割 组、名字、版本。
+    
+    notes:Gradle文件使用的是Groovy语言，故而它是支持单引号和双引号的。双引号所表示的意思是可以在中间插入值的，或者是变量的替代品或者其他完全相同的东西。更细节的东西请查看 Appendix A。
+    
+    每一个依赖都关联着一个configuration。Android工程包括 编译，运行时，测试编译和测试运行时配置。使用Android的Gradle插件你可以添加额外的配置，你也可以自定义你自己的配置。
+    依赖的完整语法都和 组、名字、版本 严格的相关联。（如Example 1-14）
+    Example 1-14 :依赖的完整语法
+    testCompile group:'junit',name:'junit',version:'4.12'
+    Example 1-14 和 Example 1-15 是完全等价的。
+    Example 1-15 : 依赖的精简语法：
+    testCompile 'junit:junit:4.12'
+    在默认build.gradle使用的就是依赖的缩略模式。
+    使用版本号和加号来指定版本号，虽然不推荐这样使用，但是确是符合语法的，如 Example 1-16所示：
+    Example 1-16 版本号使用变量（不推荐）
+    testCompile 'junit:junit:4.+'
 
 
