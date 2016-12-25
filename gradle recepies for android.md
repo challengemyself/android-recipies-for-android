@@ -631,13 +631,13 @@ Example 1-12.使用非默认的构建文件
     举个例子：考虑在app项目中添加Retrofit到项目中。
     
     如图 igure 1-10 所示：当改变了build.gradle文件的内容的时候，Android Studio提供了同步项目的操作。这个操作会触发项目去下载所依赖的库并且将他们加入到当前工程的依赖。
-    
+    ![](https://raw.githubusercontent.com/challengemyself/android-recipies-for-android/master/imgs/2016-12-25%2014-01-33figure1-10.png)
     Figure 1-10.Android Studio提供了同步项目依赖的操作，
     点完SysNow链接之后，已经在下载的库会出现在工程窗口的 External Libraries 代码块中。如Figure 1-11中。
-    
+    ![](https://raw.githubusercontent.com/challengemyself/android-recipies-for-android/master/imgs/2016-12-25%2014-02-16figure1-11.png)
     Figure 1-11 ,External Libraries
     在这种情况下，在添加retrofit依赖的同时，okhttp和okio的依赖库也会随着被添加过来，如图Fiture1-12所示。
     如果错过了点击Sync Now link的时机，Android Studio也特意在toolbar的快捷键列表里面提供了一个同步的功能。
-    
+    ![](https://raw.githubusercontent.com/challengemyself/android-recipies-for-android/master/imgs/2016-12-25%2014-02-52figure1-12.png)
     Figure1-12，使用专门提供的按钮来同步Gradle文件。
     
