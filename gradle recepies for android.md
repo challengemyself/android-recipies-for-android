@@ -605,4 +605,39 @@ Example 1-12.使用非默认的构建文件
     Example 1-16 版本号使用变量（不推荐）
     testCompile 'junit:junit:4.+'
 
+	这句话就是告诉gradle这个项目测试所需要Junit的版本是4.0或者大于4.0的Junit的gradle插件。当你的这种配置生效时，同时也就意味着项目所以来插件的不确定性，因此当有新的版本更新时之前版本的缓存是不可在利用的。与这相反的是配置准确的版本号能够避免更新的版本API而导致不可用。
+    
+    
+    
+    
+提示： 配置精确的版本号，避免因更新版本而造成依赖不可用，并且缓存是始终是可用的。
 
+
+	如果你想依赖本地的一些文件并且还不想把他们放到远程的仓库里面，那么你可以在dependencies这个代码块中使用files或者fileTree语法，如Example 1-17所示
+    denpendencies{
+    	compile files('libs/a.jar','libs/b.jar')
+        compile fileTree(dir:'libs',include:'*.jar')
+    }
+    最后那句使用相同的语法，默认的gradle构建文件也是使用相同的语法。
+   	接着，Gradle会解析这些依赖，但是需要知道去哪里去找这些资源，这就是repositories代码块所起的作用。
+    
+    
+    
+    
+    同步项目
+    
+    Android Studio会时刻的监视Gradle构建文件的变化，并且在Gradle变化时提供了同步操作。
+    
+    举个例子：考虑在app项目中添加Retrofit到项目中。
+    
+    如图 igure 1-10 所示：当改变了build.gradle文件的内容的时候，Android Studio提供了同步项目的操作。这个操作会触发项目去下载所依赖的库并且将他们加入到当前工程的依赖。
+    
+    Figure 1-10.Android Studio提供了同步项目依赖的操作，
+    点完SysNow链接之后，已经在下载的库会出现在工程窗口的 External Libraries 代码块中。如Figure 1-11中。
+    
+    Figure 1-11 ,External Libraries
+    在这种情况下，在添加retrofit依赖的同时，okhttp和okio的依赖库也会随着被添加过来，如图Fiture1-12所示。
+    如果错过了点击Sync Now link的时机，Android Studio也特意在toolbar的快捷键列表里面提供了一个同步的功能。
+    
+    Figure1-12，使用专门提供的按钮来同步Gradle文件。
+    
