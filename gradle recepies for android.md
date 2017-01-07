@@ -641,3 +641,104 @@ Example 1-12.使用非默认的构建文件
     ![](https://raw.githubusercontent.com/challengemyself/android-recipies-for-android/master/imgs/2016-12-25%2014-02-52figure1-12.png)
     Figure1-12，使用专门提供的按钮来同步Gradle文件。
     
+    
+    传递依赖
+    有一个老的笑话，将Maven定义为DSL目的是为了从网上去下载依赖。如果这可行的话，那么对于Gradle也是同样使用的。两者都支持下载间接依赖，所谓间接依赖就是项目所依赖的库还依赖着别的库。
+    提到Example 1-13 denpendencies的代码块。运行androidDependencies任务 看看实处日志，如 Example 1-18所示：
+    Exmaple 1-18 查看Android dependencies
+    > ./gradlew androidDependencies
+        :app:androidDependencies
+        debug
+        \--- com.android.support:appcompat-v7:23.3.0
+        +--- com.android.support:support-vector-drawable:23.3.0
+        |
+        \--- com.android.support:support-v4:23.3.0
+        |
+        \--- LOCAL: internal_impl-23.3.0.jar
+        +--- com.android.support:animated-vector-drawable:23.3.0
+        |
+        \--- com.android.support:support-vector-drawable:23.3.0
+        |
+        \--- com.android.support:support-v4:23.3.0
+        |
+        \--- LOCAL: internal_impl-23.3.0.jar
+        \--- com.android.support:support-v4:23.3.0
+        \--- LOCAL: internal_impl-23.3.0.jar
+        debugAndroidTest
+        No dependencies
+        
+       	debugUnitTest
+        No dependencies
+        release
+        \--- com.android.support:appcompat-v7:23.3.0
+        +--- com.android.support:support-vector-drawable:23.3.0
+        |
+        \--- com.android.support:support-v4:23.3.0
+        |
+        \--- LOCAL: internal_impl-23.3.0.jar
+        +--- com.android.support:animated-vector-drawable:23.3.0
+        |
+        \--- com.android.support:support-vector-drawable:23.3.0
+        |
+        \--- com.android.support:support-v4:23.3.0
+        |
+        \--- LOCAL: internal_impl-23.3.0.jar
+        \--- com.android.support:support-v4:23.3.0
+        \--- LOCAL: internal_impl-23.3.0.jar
+        releaseUnitTest
+        No dependencies
+   debug和release两个任务都依赖appcompat-v7库，而appcompat-v7库又依赖support-v4库，但是这个库又依赖Android Sdk中的通用库。
+   手动管理间接依赖库听起来像是好的主意，但是你实际上亲自动手的时候才知道其中的困难。现实的复杂情况会致使依赖增长的非常快，而且很难瘦身。但是Gradle却在项目不断迭代的情况下解决的依赖的情况下处理的非常好。
+   仍然，Gradle并没有专门提供语法来导入和导出相对独立的依赖库的操作。
+   默认情况下Gradle是支持间接依赖的。当然如果你想要在某个特定的依赖库中取消掉这个功能，你可以在使用transitive这个标签，如Example 1-19所示：
+   denpendencies{
+    runtime	group:'com.squareup.retrofit2',name:'retrofit',version:'2.0.1',transitive:false
+   }
+   改变transitive标签的值为false，避免了Gradle去下载库的间接依赖，所以你就必须手动的去添加你想要添加的间接依赖库。
+   
+   如果你仅仅想模块化管理jar，而不想额外的添加依赖，你也可以专门指定他们。如Example 1-20所示：
+   Example 1-20，单独模块化管理jar文件完整语法
+   dependencies{
+   	complile 'org.codehaus.groovy-all:2.4.4@jar'
+    compile group:'org.codehaus.groovy',name:'groovy-all',version:'2.4.4',ext:'jar'
+   }
+   第一行内代码使用的是简洁的语法，第二行使用是完整的语法。
+   简洁语法的写法使用了@符号。但是完整语法的写法确实使用了ext（作为扩展）来赋值。
+   
+   你也可以在denpendencies代码块儿中来导出简洁依赖库，如Example 1-21 所示：
+   Example 1-21，导出依赖
+   denpendencies{
+   	androidTestCompile('org.spockframework:spock-core:1.0-groovy-2.4'){
+    	exclude group:'org.codehaus.groovy'
+        exclude group:'junit'
+    }
+   }
+   
+   通过这种方法，spock-core工程就导出了Groovy依赖和Junit库，两者都可以被间接依赖。
+   另外：1.6章节讲述了如何通过Android Studio添加依赖。1.7章节讲述了如何去解析远程的依赖库。4.5章节讲述了lib依赖lib的解决方案。
+   
+   
+   1.6 使用Android Studio添加Lib
+   
+   问题：相比较直接编辑build.config文件添加依赖包引用，使用Android Studio这个IDE添加应该会更加的方便。
+   解决办法：在Android studio的Project Structure面板中的Dependencies选项卡。
+   讨论：有经验的Gradle开发者还是比较倾向于直接编辑build.gradle文件来添加依赖等等，主要原因还是IDE没有直接提供可视化的代码助手来帮助开发者来做这件事情。
+   你可以通过Structure菜单随时查看全部的展示，这个菜单在File的菜单下。然后选择包含在你的工程中module，如Figure1-13所示。
+   
+   Figure 1-13，工程结构ui（在之前的Figure1-5有提到）
+   
+   打开面板默认选中的选项卡是app，并且在右侧会默认高亮选中Properties。内容区域展示的内容有Compile Sdk Version和Build Tools Version等等。
+   点击Dependencies选项卡，会看见该module所有的现已经存在的依赖库，而且在此时的视图中还可以添加新的依赖（如Figure 1-14）。
+   
+   Figure 1-14.Dependencies tab in Properties
+   在“Scope”这列选项中你可以配置这项依赖所管辖的范围，目前的选项有：Compile，Provided，APK，Test Compile,Debug compile,Release compile
+   点击最右侧的加号，会出现三个不同类型依赖的选项，如图Figure 1-15.
+   
+   Figure 1-15.添加依赖的弹出菜单。
+   选择File dependencies你可以浏览文件系统中的所有的jar文件。选择Module dependencies则会涉及到在这个项目中的其他的module，这个选项会在library project章节进行讨论。
+   选择Library Dependencies则会额外的弹出一个对话框，你可以在这个对话框中搜索存在于Maven Central上的依赖库。默认情况下所展示的就是所有的支持的库和Google服务（Figure 1-16）。
+   
+   Figure 1-16.选择依赖库
+   在搜索框中，输入字符串然后点击搜索的图标，之后就会去搜索所有存在于Maven上的符合条件的依赖库。再然后点击ok按钮，这个操作会触发Gradle的同步，然后就会去网上去下载所选中的依赖库（如图 Figure 1-17）。
+   
+   Figure 1-17.寻找Gson依赖库
