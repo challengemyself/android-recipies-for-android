@@ -724,20 +724,20 @@ Example 1-12.使用非默认的构建文件
    解决办法：在Android studio的Project Structure面板中的Dependencies选项卡。
    讨论：有经验的Gradle开发者还是比较倾向于直接编辑build.gradle文件来添加依赖等等，主要原因还是IDE没有直接提供可视化的代码助手来帮助开发者来做这件事情。
    你可以通过Structure菜单随时查看全部的展示，这个菜单在File的菜单下。然后选择包含在你的工程中module，如Figure1-13所示。
-   
+   ![](https://github.com/challengemyself/android-recipies-for-android/blob/master/imgs/2017-01-07%20figure1-13.png?raw=true)
    Figure 1-13，工程结构ui（在之前的Figure1-5有提到）
    
    打开面板默认选中的选项卡是app，并且在右侧会默认高亮选中Properties。内容区域展示的内容有Compile Sdk Version和Build Tools Version等等。
    点击Dependencies选项卡，会看见该module所有的现已经存在的依赖库，而且在此时的视图中还可以添加新的依赖（如Figure 1-14）。
-   
+   ![](https://github.com/challengemyself/android-recipies-for-android/blob/master/imgs/2017-01-07%2019-05-51figure1-14.png?raw=true)
    Figure 1-14.Dependencies tab in Properties
    在“Scope”这列选项中你可以配置这项依赖所管辖的范围，目前的选项有：Compile，Provided，APK，Test Compile,Debug compile,Release compile
    点击最右侧的加号，会出现三个不同类型依赖的选项，如图Figure 1-15.
-   
+   ![](https://github.com/challengemyself/android-recipies-for-android/blob/master/imgs/2017-01-07%2019-06-24figure1-15.png?raw=true)
    Figure 1-15.添加依赖的弹出菜单。
    选择File dependencies你可以浏览文件系统中的所有的jar文件。选择Module dependencies则会涉及到在这个项目中的其他的module，这个选项会在library project章节进行讨论。
    选择Library Dependencies则会额外的弹出一个对话框，你可以在这个对话框中搜索存在于Maven Central上的依赖库。默认情况下所展示的就是所有的支持的库和Google服务（Figure 1-16）。
-   
+   ![](https://github.com/challengemyself/android-recipies-for-android/blob/master/imgs/2017-01-07%2019-06-50figure1-16.png?raw=true)
    Figure 1-16.选择依赖库
    在搜索框中，输入字符串然后点击搜索的图标，之后就会去搜索所有存在于Maven上的符合条件的依赖库。再然后点击ok按钮，这个操作会触发Gradle的同步，然后就会去网上去下载所选中的依赖库（如图 Figure 1-17）。
    
