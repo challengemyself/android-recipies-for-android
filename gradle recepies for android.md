@@ -740,5 +740,82 @@ Example 1-12.使用非默认的构建文件
    ![](https://github.com/challengemyself/android-recipies-for-android/blob/master/imgs/2017-01-07%2019-06-50figure1-16.png?raw=true)
    Figure 1-16.选择依赖库
    在搜索框中，输入字符串然后点击搜索的图标，之后就会去搜索所有存在于Maven上的符合条件的依赖库。再然后点击ok按钮，这个操作会触发Gradle的同步，然后就会去网上去下载所选中的依赖库（如图 Figure 1-17）。
-   
+   ![](https://github.com/challengemyself/android-recipies-for-android/blob/master/imgs/2017-01-07%2019-24-17figure1-17.png?raw=true)
    Figure 1-17.寻找Gson依赖库
+   提示： 1.5章节讲述如何直接编辑Gradle文件去添加依赖。1.7章节讲述如何配置Gradle的资源库。
+   
+   
+   
+   1.7 配置Gradle仓库
+   问题：如何配置仓库地址，该地址是告诉Gradle去哪里寻找Library的具体的网上的位置
+   解决方案：在Gradle文件中去配置repositories代码块
+   讨论：
+	声明仓库地址：
+   	repositories代码块告诉Gradle去哪里寻找依赖库地址。默认情况下，Android使用的是jcenter或者mavenCentral,如Example 1-22所示：
+    Example 1-22，默认的JCenter仓库
+    repositories{
+    	jcenter()
+    }
+    这句代码所代表的意思就是JCenter仓库，JCenter仓库的地址是：https://jcenter.bintray.com。注意网址使用的是HTTPS连接。
+    mavenContral()这句代码所代表的意思是Maven2远程仓库，对应的网址是：http://repo1.maven.org/maven2。mavenLocal()代码所代表的就是本地的Maven缓存（如Example 1-23）所示：
+    Example 1-23，在repositories代码块中添加maven仓库
+    repositories{
+    	mavenLocal()//本地maven缓存
+        mavenCentral()//远程的maven地址
+    }
+    任何的maven仓库都可以被添加到默认的列表中，在maven代码块中使用url符号（如Example 1-24）。
+    Example 1-24。添加Maven仓库使用URL
+    repositories{
+    	maven{
+        	url 'http://repo.spring.io/milestone'
+        }
+    }
+    有权限保护的maven仓库可以使用credentials代码块，如（Example 1-25  摘自Gradle的使用指南）所示：
+    repositories{
+    	maven{
+        	credentials{
+            	username 'username'
+                password 'password'
+            }
+            url 'http://repo.mycompany.com/maven2'
+        }
+    }
+    你还可以将完整的用户名和密码写在gradle.properties文件中。我们在2.1章节中会仔细的讲解这个。
+    Ivy和本地的配置也使用相同的语法添加
+    Example 1-26.使用Ivy仓库
+    repositories{
+    	ivy{
+        url 'http://my.ivy.repo'
+        }
+    }
+    如果你在本地有仓库文件，你也可以使用一个本地路径作为仓库，语法是使用flatDir符号（如Example 1-27）
+    repositories{
+    	flatDir{
+        	dir 'lib'
+        }
+    }
+    严格的来说，还有一种添加依赖的方法（以前所讲述的方法只是在Dependencies中配置添加），还有一种添加以来的方法就是添加文件依赖或者文件树。
+    当你在build.gradle添加依赖仓库时，程序会从上到下去解析，直到解析完所有的的依赖。
+    补充：1.5章节和1.6章节主要讲述依赖的配置。
+    
+    第二章：从导入项目到发版
+    
+    2.1 设置项目属性
+    问题：你想要给项目添加额外的属性，或者想要抽出来硬编码的数值
+    解决方案：在ext代码块中定义普通的数值。目的是为了将他们从构建文件中提取出来，或者将这些值放到gradle.properties文件中，在或者使用命令行对他们进行赋值（使用-P 标签）。
+    讨论：gradle支持使用ext标签来定义变量，ext代表的意思就是extra。有了这个功能我们定义变量就会变得很容易，即使在这个文件之外也能使用这个变量。
+    如果你想写死在build文件中的化也是可以的。Example 2-1 就是在构建文件中写死的一个例子。
+    ext{
+    	def AAVersion = '4.0-SNAPSHOT'//将这个写成你想要的数值
+    }
+    dependencies{
+    	apt "org.androidannotations:androidannotations:$AAVersion"
+        compile "org.androidannotations:androidannotations-api:$AAVersion"
+    }
+    
+    
+    正常的Groovy语法在这个例子中已经所运用到、在这里AAVersion仅仅是一个被赋值的字符串，但是它同时被两句话所引用。
+    def关键字在这里是指在这个构建文件里面有一个本地变量，而不用def关键字所表达的意思就是在工程里面添加一个属性，这也就是说在该工程里面所有的子项目都可以访问得到这个属性。
+    小提示：在ext代码块里面添加无类型的变量，实际上也是给project添加属性，但是这个属性是跟每次运行的工程实例紧紧相关联的.
+    假如你可能不想从build文件中获得实际的参数，那么你可以直接在使用maven验证用户名和密码的时候写死值。
+    
