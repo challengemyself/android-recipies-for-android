@@ -817,5 +817,98 @@ Example 1-12.使用非默认的构建文件
     正常的Groovy语法在这个例子中已经所运用到、在这里AAVersion仅仅是一个被赋值的字符串，但是它同时被两句话所引用。
     def关键字在这里是指在这个构建文件里面有一个本地变量，而不用def关键字所表达的意思就是在工程里面添加一个属性，这也就是说在该工程里面所有的子项目都可以访问得到这个属性。
     小提示：在ext代码块里面添加无类型的变量，实际上也是给project添加属性，但是这个属性是跟每次运行的工程实例紧紧相关联的.
-    假如你可能不想从build文件中获得实际的参数，那么你可以直接在使用maven验证用户名和密码的时候写死值。
+    假如你可能不想从build文件中获得实际的参数，那么你可以直接在使用maven验证用户名和密码的时候写死值。如Example2-2所示：
+    Example 2-2.在Maven仓库中写入凭证
+    repositories{
+    	maven{
+        	url 'http://rep.mycompany.com/maven2'
+            credentials{
+            	username 'user'①
+                password 'password'①
+            }
+        }
+    }
+    
+    ①这种情况是写死值的方法
+    你很可能不想在build文件中直接写入用户名和密码。而另一种可行的方法就是在项目根目录下的gradle.properties定义两个变量如Example 2-3所示
+    Example 2-3 gradle.properties文件
+    login = 'user'
+    pass = 'my_long_and_highly_complex_password'
+    
+    到此为止在Example 2-2中的认证代码块可以用定义的变量来代替了，如Example2-4所示：
+    Example 2-4，移除在credentials代码块中明确写用户名密码的写法
+    reposities{
+    	maven{
+        	url 'http://repo.mycompany.com/maven2'
+            credentials{
+            	username login①
+                password pass①
+            }
+        }
+    }
+    
+    ①从gradle.properties文件中定义的变量或者从命令行中提供的
+    
+    你还可以选择从命令行中设置变量的值，通过使用-P参数，如Example 2-5
+    Example 2-5。运行gradle使用-P标志
+    >gradle -plogin = me -Ppassword = this_is_my_password assemDebug
+    
+    当你使用了多种方法的时候，你可以通过如Example 2-6的例子来证明到底是使用了哪种方法来配置用户名和密码的。
+    Example 2-6，动态判断变量
+    ext{
+    	if(!project.hasProperty('user')){①
+        	user = 'user_from_build_file'
+        }
+        if(!project.hasProperty('pass')){①
+        	pass = 'pass_from_build_file'
+        }
+    }
+    task printProperties{
+    	doLast{
+        	println "username = $user"
+            println "password = $pass"
+        }
+    }
+    
+    ① 检查工程的属相是否存在
+    ② 自定义任务打印是否存在属性值
+    
+    不用任何额外的配置而执行printProperties任务去给ext代码块中的变量去赋值，如（Exmaple 2-7）所示：
+    Example 2-7.运行Gradle 打印出的ext代码块中所附的值
+    >./gradlew printProperties
+    :app:printProperties
+    username = user_from_build_file
+    password = pass_from_build_file
+    
+    如果是在工程项目的根目录下的gradle.properties文件中赋的值，那么打印结果就会不同了（如Example 2-8 和 2-9）.
+    
+    Example 2-8.使用grale.properties 设置用户名和密码的的值
+    user = user_from_gradle_properties
+    pass = pass_from_gradle_properties
+    
+    Example 2-9.使用gradle.properties给变量赋值 运行gradle的打印结果
+    >./gradlew printProperties
+    :app:printProperties
+    username = user_from_gradle_properties
+    password = pass_form_gradle_properties
+    
+    也可以使用命令行来进行赋值，但是需要提醒的是这种赋值的方式的优先级是最高的（如Example 2-10）
+    
+    Example 2-10 . 使用命令行进行赋值时运行gralde
+    >./gradlew -Puser = user_from_pflag -Ppass = pass_from_pflag printProperties
+    :app:printProperties
+    username = user_from_pflag
+    password = pass_from_pflag
+    
+    gralde提供ext代码块，属性文件，以及命令行标志，就是尽可能的希望能够给你足够多的选择空间来方便你的使用。
+    
+    最后提示： 自定义task会在Recipe4.1进行讲解。建立仓库是Recipe1.7的内容中会讲解
+    
+    
+    
+    2.2 从Eclipse开发 转向 Android Studio 开发
+    
+    问题：你可能想使用Android Studio工具导入Eclipse安卓项目。
+    
+    
     
