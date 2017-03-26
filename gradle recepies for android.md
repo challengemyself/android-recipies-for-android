@@ -910,5 +910,80 @@ Example 1-12.使用非默认的构建文件
     
     问题：你可能想使用Android Studio工具导入Eclipse安卓项目。
     
+    解决方案：
+    Android studio提供了导入项目向导的功能，通过这个功能你可以导入已经存在的项目工程
+    
+    讨论：
+    Figure 2-1 展示的是在Android Studio的欢迎页面有导入studio工程的快捷链接方式，这些工程即可以是Eclipse项目也可以是Gralde 构建的项目
+    ![]()
+    Figure 1-2 . Android studio 欢迎页展示了导入选项
+    
+    点击那个快捷方式会出现引导你选择已经存在于电脑上的Eclipse项目
+    Figure 2-2 就是会展示这样一个项目。这个项目使用的老的工程结构，在它的根目录下有src res，以及Androidmanifest.xml文件
+    当你选择了目标文件夹之后（向导是不会覆盖原始的工程的），向导还会自动帮你将lib文件夹下面的jar包的依赖转换成gradle文件中的依赖，在其他的选项中，如Figure2-3所示
+    ![]()
+    Figure 2-2,选择Eclipse 工程
+    ![]()
+   	Figure 2-3.导入工程选项
+    
+    
+    
+    想到在导入工程之后会重构工程的结构然后构建它。默认情况下，import-summary.txt 窗口会展示工程主要的改变。如Example2-11 所示
+    ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+    ======================================
+    Ignored Files:
+    --------------
+    The following files were *not* copied into the new Gradle project; you
+    should evaluate whether these are still needed in your project and if
+    so manually move them:
+    * proguard-project.txt
+    Moved Files:
+    ------------
+    Android Gradle projects use a different directory structure than ADT
+    Eclipse projects. Here's how the projects were restructured:
+    *
+    *
+    *
+    *
+    AndroidManifest.xml => app/src/main/AndroidManifest.xml
+    assets/ => app/src/main/assets
+    res/ => app/src/main/res/
+    src/ => app/src/main/java/
+    Next Steps:
+    -----------
+    You can now build the project. The Gradle project needs network
+    connectivity to download dependencies.
+    Bugs:
+    -----
+    If for some reason your project does not build, and you determine that
+    it is due to a bug or limitation of the Eclipse to Gradle importer,
+    please file a bug at http://b.android.com with category
+    Component-Tools.
+    (This import summary is for your information only, and can be deleted
+    after import once you are satisfied with the results.)
+    
+    
+    
+    除了Proguard文件在着重说明之外，剩下的最大的变化就是文件的位置的改变。
+    
+    在这创建的一级目录下的gradle.build文件是和新创建的工程中的gradle.build文件是一样的，如Example 2-12
+    
+    
+   	Example 2-12,一级创建的构建文件
+    sub-projects/modules.
+    buildscript {
+        repositories {
+            jcenter()
+        }
+        dependencies {
+        	classpath 'com.android.tools.build:gradle:2.0.0'
+        }
+        }
+        allprojects {
+            repositories {
+            	jcenter()
+            }
+    }
+    在app文件夹下面有原始的工程文件，也会有一个很相似的gralde文件，如Example 2-13 所示
     
     
