@@ -915,15 +915,15 @@ Example 1-12.使用非默认的构建文件
     
     讨论：
     Figure 2-1 展示的是在Android Studio的欢迎页面有导入studio工程的快捷链接方式，这些工程即可以是Eclipse项目也可以是Gralde 构建的项目
-    ![]()
+    ![](https://github.com/challengemyself/android-recipies-for-android/blob/master/imgs/2017-03-26%2022-53-26figure2-1.png?raw=true)
     Figure 1-2 . Android studio 欢迎页展示了导入选项
     
     点击那个快捷方式会出现引导你选择已经存在于电脑上的Eclipse项目
     Figure 2-2 就是会展示这样一个项目。这个项目使用的老的工程结构，在它的根目录下有src res，以及Androidmanifest.xml文件
     当你选择了目标文件夹之后（向导是不会覆盖原始的工程的），向导还会自动帮你将lib文件夹下面的jar包的依赖转换成gradle文件中的依赖，在其他的选项中，如Figure2-3所示
-    ![]()
+    ![](https://github.com/challengemyself/android-recipies-for-android/blob/master/imgs/2017-03-26%2023-15-43-figure-2-2.png?raw=true)
     Figure 2-2,选择Eclipse 工程
-    ![]()
+    ![](https://github.com/challengemyself/android-recipies-for-android/blob/master/imgs/2017-03-26%2023-17-01-figure-2-3.png?raw=true)
    	Figure 2-3.导入工程选项
     
     
